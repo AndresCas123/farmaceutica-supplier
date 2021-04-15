@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "a66c7528-3db7-4091-b15c-c55f77e7d299",
+		"name": "farmaceutica-supplier",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "supplier - list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/farmaceutica/api/v1/suppliers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"farmaceutica",
+						"api",
+						"v1",
+						"suppliers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "supplier - get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/farmaceutica/api/v1/suppliers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"farmaceutica",
+						"api",
+						"v1",
+						"suppliers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "supplier - catalog",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/farmaceutica/api/v1/suppliers/1/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"farmaceutica",
+						"api",
+						"v1",
+						"suppliers",
+						"1",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
