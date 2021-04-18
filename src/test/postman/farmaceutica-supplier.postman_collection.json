@@ -28,6 +28,28 @@
 			"response": []
 		},
 		{
+			"name": "city - list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/farmaceutica/api/v1/suppliers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"farmaceutica",
+						"api",
+						"v1",
+						"suppliers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "supplier - get",
 			"request": {
 				"method": "GET",
