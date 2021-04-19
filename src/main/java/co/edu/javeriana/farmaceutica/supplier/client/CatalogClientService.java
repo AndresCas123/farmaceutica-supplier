@@ -1,8 +1,7 @@
 package co.edu.javeriana.farmaceutica.supplier.client;
 
-import co.edu.javeriana.farmaceutica.supplier.message.CatalogResponse;
-import java.util.List;
+import co.edu.javeriana.farmaceutica.supplier.client.message.CatalogResponse;
 
 public interface CatalogClientService {
-    List<CatalogResponse> list();
+    CatalogResponse list();
 }

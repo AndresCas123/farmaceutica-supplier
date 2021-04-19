@@ -1,10 +1,10 @@
 package co.edu.javeriana.farmaceutica.supplier.service.impl;
 
+import co.edu.javeriana.farmaceutica.supplier.client.message.CatalogResponse;
 import co.edu.javeriana.farmaceutica.supplier.entity.Catalog;
 import co.edu.javeriana.farmaceutica.supplier.entity.City;
 import co.edu.javeriana.farmaceutica.supplier.entity.Department;
 import co.edu.javeriana.farmaceutica.supplier.entity.Supplier;
-import co.edu.javeriana.farmaceutica.supplier.message.CatalogResponse;
 import co.edu.javeriana.farmaceutica.supplier.message.CityResponse;
 import co.edu.javeriana.farmaceutica.supplier.repository.CatalogRepository;
 import co.edu.javeriana.farmaceutica.supplier.repository.CityRepository;
@@ -67,8 +67,8 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void syncCatalog(List<CatalogResponse> catalog) {
-        catalog.forEach(cat -> {
+    public void syncCatalog(CatalogResponse catalog) {
+        catalog.getCatalog().forEach(cat -> {
             Optional<City> source = cityRepository.findById(cat.getSource());
             Optional<City> destination = cityRepository.findById(cat.getDestination());
             Optional<Supplier> supplier = supplierRepository.findById(cat.getSupplier());

@@ -1,8 +1,7 @@
 package co.edu.javeriana.farmaceutica.supplier.client;
 
-import co.edu.javeriana.farmaceutica.supplier.entity.Supplier;
-import java.util.List;
+import co.edu.javeriana.farmaceutica.supplier.client.message.SuppliersResponse;
 
 public interface SupplierClientService {
-    List<Supplier> list();
+    SuppliersResponse list();
 }
