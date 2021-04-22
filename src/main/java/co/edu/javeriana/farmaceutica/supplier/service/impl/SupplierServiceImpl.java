@@ -1,31 +1,33 @@
 package co.edu.javeriana.farmaceutica.supplier.service.impl;
 
-import co.edu.javeriana.farmaceutica.supplier.client.message.CatalogResponse;
-import co.edu.javeriana.farmaceutica.supplier.entity.Catalog;
+import co.edu.javeriana.farmaceutica.supplier.adapter.SupplierAdapter;
+import co.edu.javeriana.farmaceutica.supplier.client.SupplierClientService;
 import co.edu.javeriana.farmaceutica.supplier.entity.City;
 import co.edu.javeriana.farmaceutica.supplier.entity.Department;
 import co.edu.javeriana.farmaceutica.supplier.entity.Supplier;
 import co.edu.javeriana.farmaceutica.supplier.message.CityResponse;
-import co.edu.javeriana.farmaceutica.supplier.repository.CatalogRepository;
 import co.edu.javeriana.farmaceutica.supplier.repository.CityRepository;
 import co.edu.javeriana.farmaceutica.supplier.repository.DepartmentRepository;
 import co.edu.javeriana.farmaceutica.supplier.repository.SupplierRepository;
 import co.edu.javeriana.farmaceutica.supplier.service.SupplierService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
     private final DepartmentRepository departmentRepository;
     private final CityRepository cityRepository;
-    private final CatalogRepository catalogRepository;
+    private final SupplierClientService supplierClientService;
+    private final SupplierAdapter supplierAdapter;
 
     @Transactional
     public Supplier save(Supplier supplier) {
@@ -34,12 +36,26 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public List<Supplier> list() {
-        return supplierRepository.findAll();
+        List<Supplier> res = new ArrayList<>();
+        try {
+            res = supplierAdapter.adapter(supplierClientService.list());
+            log.info("Loading suppliers from ERP");
+            supplierRepository.saveAll(res);
+        } catch(Exception ex) {
+            log.warn(ex.getMessage());
+            log.info("Loading suppliers from local cache");
+            res = supplierRepository.findAll();
+        }
+        return res;
     }
 
     @Override
     public Optional<Supplier> get(String id) {
-        return supplierRepository.findById(id);
+        List<Supplier> list = supplierRepository.findAll();
+        if(list.isEmpty()) {
+            list = list();
+        }
+        return list.stream().filter(s -> s.getId().equals(id)).findFirst();
     }
 
     @Override
@@ -58,31 +74,6 @@ public class SupplierServiceImpl implements SupplierService {
                 return city;
             })
             .map(city -> cityRepository.save(city));
-        });
-    }
-
-    @Override
-    public void syncSuppliers(List<Supplier> suppliers) {
-        supplierRepository.saveAll(suppliers);
-    }
-
-    @Override
-    public void syncCatalog(CatalogResponse catalog) {
-        catalog.getCatalog().forEach(cat -> {
-            Optional<City> source = cityRepository.findById(cat.getSource());
-            Optional<City> destination = cityRepository.findById(cat.getDestination());
-            Optional<Supplier> supplier = supplierRepository.findById(cat.getSupplier());
-            if(source.isPresent() && destination.isPresent() && supplier.isPresent()) {
-                Catalog tmpCat = new Catalog();
-                tmpCat.setId(cat.getId());
-                tmpCat.setMinWeight(cat.getMinWeight());
-                tmpCat.setMaxWeight(cat.getMaxWeight());
-                tmpCat.setSource(source.get());
-                tmpCat.setDestination(destination.get());
-                tmpCat.setPrice(cat.getPrice());
-                tmpCat.setSupplier(supplier.get());
-                catalogRepository.save(tmpCat);
-            }
         });
     }
 }

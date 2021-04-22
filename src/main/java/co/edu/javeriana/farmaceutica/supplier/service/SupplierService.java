@@ -13,6 +13,4 @@ public interface SupplierService {
     Optional<Supplier> get(String id);
     void syncDepartments(List<Department> departments);
     void syncCities(List<CityResponse> cities);
-    void syncSuppliers(List<Supplier> suppliers);
-    void syncCatalog(CatalogResponse catalog);
 }

@@ -40,27 +40,5 @@ public class ScheduledTasks {
         } catch(Exception ex) {
             log.error(ex.getMessage(), ex);
         }
-        log.info("Sincronizando suppliers");
-        try {
-            List<Supplier> suppliers = new ArrayList<>();
-            SuppliersResponse res = supplierClientService.list();
-            res.getSuppliers().forEach(c -> {
-                Supplier supplier = new Supplier();
-                supplier.setId(c.getId());
-                supplier.setDocumentType(c.getDocumentType());
-                supplier.setDocument(c.getDocument());
-                supplier.setName(c.getName());
-                suppliers.add(supplier);
-            });
-            supplierService.syncSuppliers(suppliers);
-        } catch(Exception ex) {
-            log.error(ex.getMessage(), ex);
-        }
-        log.info("Sincronizando catalog");
-        try {
-            supplierService.syncCatalog(catalogClientService.list());
-        } catch(Exception ex) {
-            log.error(ex.getMessage(), ex);
-        }
     }
 }
